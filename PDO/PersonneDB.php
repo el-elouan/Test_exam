@@ -1,6 +1,7 @@
 <?php
 require_once "Constantes.php";
 require_once "metier/Personne.php";
+require_once "metier/Adresse.php";
 /**
  * 
 *Classe permettant d'acceder en bdd pour inserer supprimer
@@ -190,10 +191,20 @@ public function update(Personne $p)
  */
 public function authentification($login,$pwd){
 	//on crytpe le pwd en md5 pour le comparer avec celui présent en bdd
-	$pwdcrypte=md5($pwd);
-	// TODO vérifier que le login et le pwd correspondent à ceux présent en bdd  
-	
-	//retour du resultat
-	return $arrAll;
-}
+	$query = $this->db->prepare($query);
+	$query->bindValue(':login', $login);
+	$query->execute();
+	$result = $query->fetch(PDO::FETCH_ASSOC);
+
+	if (empty($result)) {
+		throw new Exception(Constantes::EXCEPTION_DB_PERSONNE);
+	}
+
+// TODO vérifier que le login et le pwd correspondent à ceux présent en bdd 
+	if ($result["pwd"] == md5($pwd)) {
+		return $result;
+	} else {
+		throw new Exception(Constantes::EXCEPTION_DB_PERSONNE);
+	} 
+	}
 }

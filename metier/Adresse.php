@@ -70,8 +70,7 @@ class Adresse {
 		return '[' .$this->getId().','
 		.$this->getNumero().','
 		.$this->getRue().','
-		.$this->getCodePostal().','
-         .$this->getVille().']';
+		.$this->getCodePostal().',';
 
 }
 }

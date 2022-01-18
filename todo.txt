@@ -1,10 +1,10 @@
 -Vous devez :
--insérer le fichier auth.css dans le fichier headerAuth.html, dans le dossier vue
--Ajouter l'attribut Adresse dans la classe metier personne.php
--implementer la classe AdresseDB.php
--implementer le fichier de tests AdresseDBTest.php pour toutes les méthodes de la classe AdresseDB.php
--implémenter la méthode authentification de PersonneDB.php
--implémenter le test de la méthode authentification dans le fichier PersonneDBTest.php
+FAIT      -insérer le fichier auth.css dans le fichier headerAuth.html, dans le dossier vue
+FAIT      -Ajouter l'attribut Adresse dans la classe metier personne.php
+FAIT      -implementer la classe AdresseDB.php
+FAIT      -implementer le fichier de tests AdresseDBTest.php pour toutes les méthodes de la classe AdresseDB.php
+FAIT      -implémenter la méthode authentification de PersonneDB.php
+FAIT      -implémenter le test de la méthode authentification dans le fichier PersonneDBTest.php
 -implementer le front de l'item MonCompte: 
 	-controller moncompteController.php
 	-vue vueMoncompte.php
@@ -13,3 +13,5 @@
 -implementer le back de l'item MonCompte permettant de mettre à jour les informations de l'utilisateur ( compte utilisateur et son adresse) en bdd:
 	-controller validCompteController.php
 	-vue vueValidcompte.php
+
+.\vendor\bin\phpunit

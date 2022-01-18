@@ -211,7 +211,7 @@ $this->assertEquals(  $tab["pwd"],$pers->getPwd());
       $this->personne = new PersonneDB($this->pdodb);
         //insertion en bdd de l'enreg
         $dt = new DateTime('1950-01-12');
-        $p = new Personne("Hollande", "Francois",$dt,"0656463524", "fhollande@free.fr", "fhollande", "monpwd");
+        $p = new Personne("Hollande", "Francois",$dt,"0656463524", "fhollande@free.fr", "fhollande", "monpwd", new Adresse(3,4,"rue de saint honoré",44000,"Nantes"));
         $p->setPwd("monpwd");
         $p->setId(99);
      //insertion en bdd
@@ -235,6 +235,20 @@ $this->assertEquals($p->getEmail(),$pers->getEmail());
 $this->assertEquals($p->getlogin(),$pers->getLogin());
 $this->assertEquals($p->getPwd(),$pers->getPwd());      
 
+    }
+
+    public function testAuth () {
+        $dt = new DateTime('1950-01-12');
+        $p = new Personne("Hollande", "Francois",$dt,"0656463524", "fhollande@free.fr", "fhollande", "monpwd", new Adresse(3,4,"rue de saint honoré",44000,"Nantes"));
+        $p->setPwd("monpwd");
+        $p->setId(99);
+         //insertion en bdd
+         $this->personne->ajout($p);
+
+         $lastId = $this->pdodb->lastInsertId();
+        $p->setId($lastId);
+        $pers = $this->personne->selectionId($p->getId());
+        $this->assertEquals($pers->getPwd(), $p->getPwd());
     }
 
 }

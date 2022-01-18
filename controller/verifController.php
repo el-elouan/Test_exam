@@ -27,14 +27,12 @@ else {
 	//conversion du pdo en objet
 	$obj=(object)$result;
 	$nom=$obj->login;
-	$idpers=$obj->id;
 	//creation d'un token et stockage en dans la variable de session
 		$token = uniqid(rand(), true);
 		$_SESSION['token'] = $token;
 		//heure de creation du token en timestamp
 		$_SESSION['token_time'] = time();
 		$_SESSION['nom'] = $nom;
-		$_SESSION['id'] = $idpers;
 //ok renvoyé au javascript pour rediriger vers accueil.php
 echo "ok-$token";
 }

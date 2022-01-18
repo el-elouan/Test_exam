@@ -25,6 +25,13 @@ class AdresseDB
 	public function ajout(Adresse $a)
 	{
 	//TODO insertion de l'adresse en bdd
+		$query = $this->db->prepare("INSERT INTO adresse(numero,rue,codepostal,ville) values(:numero,:rue,:codepostal,:ville)");
+
+		$query->bindValue(":numero",$a->getNumero());
+		$query->bindValue(":rue",$a->getRue());
+		$query->bindValue(":codepostal",$a->getCodepostal());
+		$query->bindValue(":ville",$a->getVille());
+		$query->execute();
 	}
     /**
      * 
@@ -33,6 +40,13 @@ class AdresseDB
      */
 	public function suppression(Adresse $a){
 		 //TODO suppression de l'adresse en bdd
+		$query = $this->db->prepare("DELETE FROM adresse WHERE numero=:numero AND rue=:rue AND codepostal=:codepostal AND ville=:ville");
+
+		$query->bindValue(":numero",$a->getNumero());
+		$query->bindValue(":rue",$a->getRue());
+		$query->bindValue(":codepostal",$a->getCodepostal());
+		$query->bindValue(":ville",$a->getVille());
+		$query->execute();
 	}
 /** 
 	 * Fonction de modification d'une adresse
@@ -43,7 +57,15 @@ public function update(Adresse $a)
 	{
 		try {
 		//TODO mise a jour de l'adresse en bdd
-		}
+			$query = $this->db->prepare("UPDATE adresse SET numero=:numero, rue=:rue, codepostal=:codepostal, ville=:ville WHERE id=:id");
+
+			$query->bindValue(":numero",$a->getNumero());
+			$query->bindValue(":rue",$a->getRue());
+			$query->bindValue(":codepostal",$a->getCodepostal());
+			$query->bindValue(":ville",$a->getVille());
+			$query->bindValue(":id",$a->getId());
+			$query->execute();
+			}
 		catch(Exception $e){
 			//TODO definir constante de l'exception
 			throw new Exception(); 
@@ -58,11 +80,16 @@ public function update(Adresse $a)
 	public function selectAll(){
 		
 		//TODO selection de l'adresse
-		
+		$query = $this->db->prepare("SELECT numero,rue,codepostal,ville FROM adresse");
+		$query->execute();
+		$result = $query->fetchAll(PDO::FETCH_CLASS);
+
 	//TODO definir constante de l'exception
 		if(empty($result)){
 			throw new Exception();
 		}
+
+		return $result;
 	}	
 		/**
 	 * 
@@ -75,16 +102,41 @@ public function update(Adresse $a)
 		if(empty($id)){
 			throw new Exception();
 		}
+
+		$query = $this->db->prepare("SELECT * FROM adresse WHERE id=:id");
+		$query->bindValue(":id",$id);
+		$query->execute();
+		$result = $query->fetchAll(PDO::FETCH_CLASS);
+
+		if(empty($result)){
+			throw new Exception();
+		}
+
+		return $this->convertPdoAdr($result);
+
 			//TODO selection de l'adresse en fonction de son id
 		
 	}	
 	/**
-	 * 
-	 * Fonction qui convertie un PDO Adresse en objet Adresse
+	* Fonction qui convertie un PDO Adresse en objet Adresse
 	 * @param $pdoAdres
 	 * @throws Exception
 	 */
-	private function convertPdoPers($pdoAdres){
-	//TODO conversion du PDO ADRESSE en objet adresse
+	public function convertPdoAdr($pdoAdresse)
+	{
+		//TODO conversion du PDO ADRESSE en objet adresse
+		if (empty($pdoAdresse)) {
+			throw new Exception(Constantes::EXCEPTION_DB_CONVERT_ADR);
+		}
+		$obj = (object)$pdoAdresse;
+		$adr = new Adresse(
+			$obj->numero, 
+			$obj->rue, 
+			$obj->codepostal, 
+			$obj->ville, 
+			$obj->id_pers
+		);
+		$adr->setId($obj->id);
+		return $adr;
 	}
 }
